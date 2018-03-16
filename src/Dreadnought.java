@@ -12,7 +12,7 @@ public class Dreadnought extends Critter {
         stepCount = 0;
     }
 
-    public Action getMove(){
+    public Action getMove(CritterInfo info){
 
         stepCount++;
 
