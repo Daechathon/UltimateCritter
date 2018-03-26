@@ -1,12 +1,14 @@
-import java.lang.reflect.Method;
-import java.util.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
- * Robbie Sollie - TheHat.java - EGR226 - CBU - 3/15/18
+ * Created by Brandon Aldridge on 3/26/2018.
  */
-public class TheHat extends Critter {
-    private static HashMap<TheHat, CritterInfo> swarm = new HashMap<>();
+public class StormageddonDestroyerOfChenAndNugent extends Critter {
+
+    private static HashMap<StormageddonDestroyerOfChenAndNugent, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean isFirst;
     private boolean hasMoved;
@@ -16,8 +18,9 @@ public class TheHat extends Critter {
     private static boolean charge;
 
     private static Class overlord;
+    private static String[] hierarchy = {"TheHat", "StormageddonDestroyerOfChenAndNugent"};
 
-    public TheHat() {
+    public StormageddonDestroyerOfChenAndNugent() {
 
         movedThisRound = true;
         hasMoved = false;
@@ -36,7 +39,7 @@ public class TheHat extends Critter {
     }
 
     @Override
-    public Action getMove(CritterInfo info) {
+    public Critter.Action getMove(CritterInfo info) {
         movedThisRound = true;
         if (!hasMoved) {
             swarm.put(this, info);
@@ -51,26 +54,26 @@ public class TheHat extends Critter {
         peaceTime++;
 
         if (charge && peaceTime > 500) {
-            if (info.getFront()  == Neighbor.OTHER) {
+            if (info.getFront()  == Critter.Neighbor.OTHER) {
                 peaceTime = 0;
-                return Action.INFECT;
-            } else if (info.getFront() == Neighbor.SAME || info.getFront() == Neighbor.WALL){
+                return Critter.Action.INFECT;
+            } else if (info.getFront() == Critter.Neighbor.SAME || info.getFront() == Critter.Neighbor.WALL){
                 peaceTime = 0;
             }
-            return Action.HOP;
+            return Critter.Action.HOP;
         }
 
-        if (info.getFront() == Neighbor.OTHER) {
+        if (info.getFront() == Critter.Neighbor.OTHER) {
             peaceTime = 0;
-            return Action.INFECT;
-        } else if (info.getRight() == Neighbor.EMPTY || info.getRight() == Neighbor.OTHER) {
-            return Action.RIGHT;
-        } else if (info.getLeft() == Neighbor.EMPTY || info.getLeft() == Neighbor.OTHER) {
-            return Action.LEFT;
-        } else if (info.getBack() == Neighbor.EMPTY || info.getBack() == Neighbor.OTHER) {
-            return Action.RIGHT;
+            return Critter.Action.INFECT;
+        } else if (info.getRight() == Critter.Neighbor.EMPTY || info.getRight() == Critter.Neighbor.OTHER) {
+            return Critter.Action.RIGHT;
+        } else if (info.getLeft() == Critter.Neighbor.EMPTY || info.getLeft() == Critter.Neighbor.OTHER) {
+            return Critter.Action.LEFT;
+        } else if (info.getBack() == Critter.Neighbor.EMPTY || info.getBack() == Critter.Neighbor.OTHER) {
+            return Critter.Action.RIGHT;
         } else {
-            return Action.INFECT;
+            return Critter.Action.INFECT;
         }
     }
 
@@ -93,15 +96,15 @@ public class TheHat extends Critter {
     }
 
     private void setSwarm() {
-        Set<TheHat> hitList = new HashSet<>();
-        for (TheHat h : swarm.keySet()) {
+        Set<StormageddonDestroyerOfChenAndNugent> hitList = new HashSet<>();
+        for (StormageddonDestroyerOfChenAndNugent h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
 
             }
             h.movedThisRound = false;
         }
-        for (TheHat h : hitList) {
+        for (StormageddonDestroyerOfChenAndNugent h : hitList) {
             swarm.remove(h);
         }
         charge = false;
