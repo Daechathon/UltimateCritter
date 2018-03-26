@@ -1,3 +1,4 @@
+import java.lang.reflect.Method;
 import java.util.*;
 import java.awt.*;
 
@@ -7,18 +8,31 @@ import java.awt.*;
 public class TheHat extends Critter {
     private static HashMap<TheHat, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
-    private boolean amIFirst;
+    private boolean isFirst;
     private boolean hasMoved;
     private boolean movedThisRound;
     private int peaceTime;
     private static int peaceSum;
     private static boolean charge;
 
+    private static Class overlord;
 
     public TheHat() {
+
         movedThisRound = true;
         hasMoved = false;
         peaceTime = 0;
+
+        String className = "NotAHat";
+        String packageName = getClass().getPackage().getName();
+
+        try {
+            Class<?> clazz = Class.forName(packageName + "." + className);
+
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     @Override
@@ -30,7 +44,7 @@ public class TheHat extends Critter {
         }
         if (!newCycle) {
             peaceSum = 0;
-            amIFirst = true;
+            isFirst = true;
             newCycle = true;
         }
         peaceSum += peaceTime;
@@ -62,6 +76,7 @@ public class TheHat extends Critter {
 
     @Override
     public String toString() {
+
         return "þ";
     }
 
@@ -69,12 +84,12 @@ public class TheHat extends Critter {
         newCycle = false;
 
 
-        if (amIFirst) {
+        if (isFirst) {
             setSwarm();
-            amIFirst = false;
+            isFirst = false;
             return Color.RED;
         }
-        return Color.ORANGE;
+        return Color.GREEN;
     }
 
     private void setSwarm() {
@@ -96,3 +111,62 @@ public class TheHat extends Critter {
     }
 
 }
+
+//stuff to look at for overlord implementation--------------------------------------------------------------------------------------------------------
+
+/*
+import java.lang.reflect.Method;
+
+public class ReflectionCalls {
+    public static void main(String[] args) {
+        new ReflectionCalls();
+    }
+
+    public ReflectionCalls() {
+        callMethod(true);
+        callMethod(false);
+    }
+
+    private void callMethod(boolean isInstanceMethod) {
+
+        String className = "DiscoveredClass";
+        String staticMethodName = "methodStatic";
+        String instanceMethodName = "methodInstance";
+        Class<?>[] formalParameters = { int.class, String.class };
+        Object[] effectiveParameters = new Object[] { 5, "hello" };
+        String packageName = getClass().getPackage().getName();
+
+        try {
+            Class<?> clazz = Class.forName(packageName + "." + className);
+
+            if (!isInstanceMethod) {
+                Method method = clazz.getMethod(staticMethodName, formalParameters);
+                method.invoke(null, effectiveParameters);
+            }
+
+            else {
+                Method method = clazz.getMethod(instanceMethodName, formalParameters);
+                Object newInstance = clazz.newInstance();
+                method.invoke(newInstance, effectiveParameters);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+package reflectionexp;
+
+    public class DiscoveredClass {
+
+        public static void methodStatic(int x, String string) {
+            System.out.println("static method with " + x + " and " + string);
+        }
+
+        public void methodInstance(int x, String string) {
+            System.out.println("instance method with " + x + " and " + string);
+        }
+
+    }
+ */
