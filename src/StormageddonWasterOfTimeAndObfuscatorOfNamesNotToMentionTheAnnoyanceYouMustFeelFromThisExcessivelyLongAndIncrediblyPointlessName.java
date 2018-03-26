@@ -6,9 +6,9 @@ import java.util.Set;
 /**
  * Created by Brandon Aldridge on 3/26/2018.
  */
-public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis extends Critter {
+public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName extends Critter {
 
-    private static HashMap<StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis, CritterInfo> swarm = new HashMap<>();
+    private static HashMap<StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean isFirst;
     private boolean hasMoved;
@@ -18,10 +18,10 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
     private static boolean charge;
 
     private static Class overlord;
-    private static String[] hierarchy = {"TheHat", "StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis"};
+    private static String[] hierarchy = {"TheHat", "StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName"};
     
 
-    public StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis() {
+    public StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName() {
 
         movedThisRound = true;
         hasMoved = false;
@@ -97,15 +97,15 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
     }
 
     private void setSwarm() {
-        Set<StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis> hitList = new HashSet<>();
-        for (StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis h : swarm.keySet()) {
+        Set<StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName> hitList = new HashSet<>();
+        for (StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
 
             }
             h.movedThisRound = false;
         }
-        for (StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis h : hitList) {
+        for (StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName h : hitList) {
             swarm.remove(h);
         }
         charge = false;
