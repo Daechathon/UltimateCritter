@@ -6,9 +6,9 @@ import java.util.Set;
 /**
  * Created by Brandon Aldridge on 3/26/2018.
  */
-public class StormageddonDestroyerOfTimeAndObfuscatorOfNames extends Critter {
+public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis extends Critter {
 
-    private static HashMap<StormageddonDestroyerOfTimeAndObfuscatorOfNames, CritterInfo> swarm = new HashMap<>();
+    private static HashMap<StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean isFirst;
     private boolean hasMoved;
@@ -18,10 +18,10 @@ public class StormageddonDestroyerOfTimeAndObfuscatorOfNames extends Critter {
     private static boolean charge;
 
     private static Class overlord;
-    private static String[] hierarchy = {"TheHat", "StormageddonDestroyerOfTimeAndObfuscatorOfNames"};
+    private static String[] hierarchy = {"TheHat", "StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis"};
     
 
-    public StormageddonDestroyerOfTimeAndObfuscatorOfNames() {
+    public StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis() {
 
         movedThisRound = true;
         hasMoved = false;
@@ -97,15 +97,15 @@ public class StormageddonDestroyerOfTimeAndObfuscatorOfNames extends Critter {
     }
 
     private void setSwarm() {
-        Set<StormageddonDestroyerOfTimeAndObfuscatorOfNames> hitList = new HashSet<>();
-        for (StormageddonDestroyerOfTimeAndObfuscatorOfNames h : swarm.keySet()) {
+        Set<StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis> hitList = new HashSet<>();
+        for (StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
 
             }
             h.movedThisRound = false;
         }
-        for (StormageddonDestroyerOfTimeAndObfuscatorOfNames h : hitList) {
+        for (StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThis h : hitList) {
             swarm.remove(h);
         }
         charge = false;
