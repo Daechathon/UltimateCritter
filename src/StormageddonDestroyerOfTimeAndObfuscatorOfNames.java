@@ -6,9 +6,9 @@ import java.util.Set;
 /**
  * Created by Brandon Aldridge on 3/26/2018.
  */
-public class StormageddonDestroyerOfChenAndNugent extends Critter {
+public class StormageddonDestroyerOfTimeAndObfuscatorOfNames extends Critter {
 
-    private static HashMap<StormageddonDestroyerOfChenAndNugent, CritterInfo> swarm = new HashMap<>();
+    private static HashMap<StormageddonDestroyerOfTimeAndObfuscatorOfNames, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean isFirst;
     private boolean hasMoved;
@@ -18,9 +18,10 @@ public class StormageddonDestroyerOfChenAndNugent extends Critter {
     private static boolean charge;
 
     private static Class overlord;
-    private static String[] hierarchy = {"TheHat", "StormageddonDestroyerOfChenAndNugent"};
+    private static String[] hierarchy = {"TheHat", "StormageddonDestroyerOfTimeAndObfuscatorOfNames"};
+    
 
-    public StormageddonDestroyerOfChenAndNugent() {
+    public StormageddonDestroyerOfTimeAndObfuscatorOfNames() {
 
         movedThisRound = true;
         hasMoved = false;
@@ -96,15 +97,15 @@ public class StormageddonDestroyerOfChenAndNugent extends Critter {
     }
 
     private void setSwarm() {
-        Set<StormageddonDestroyerOfChenAndNugent> hitList = new HashSet<>();
-        for (StormageddonDestroyerOfChenAndNugent h : swarm.keySet()) {
+        Set<StormageddonDestroyerOfTimeAndObfuscatorOfNames> hitList = new HashSet<>();
+        for (StormageddonDestroyerOfTimeAndObfuscatorOfNames h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
 
             }
             h.movedThisRound = false;
         }
-        for (StormageddonDestroyerOfChenAndNugent h : hitList) {
+        for (StormageddonDestroyerOfTimeAndObfuscatorOfNames h : hitList) {
             swarm.remove(h);
         }
         charge = false;
