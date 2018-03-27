@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -16,6 +17,7 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
     private int peaceTime;
     private static int peaceSum;
     private static boolean charge;
+    private Squad squad;
 
     private static Class overlord;
     private static String[] hierarchy = {"TheHat", "StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName"};
@@ -26,16 +28,18 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
         movedThisRound = true;
         hasMoved = false;
         peaceTime = 0;
+        squad = new Squad(this);
 
-        String className = "Foo";
-        String packageName = getClass().getPackage().getName();
 
-        try {
-            Class<?> clazz = Class.forName(packageName + "." + className);
-
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+//        String className = "Foo";
+//        String packageName = getClass().getPackage().getName();
+//
+//        try {
+//            Class<?> clazz = Class.forName(packageName + "." + className);
+//
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        }
 
     }
 
@@ -87,7 +91,6 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
     public Color getColor() {
         newCycle = false;
 
-
         if (isFirst) {
             setSwarm();
             isFirst = false;
@@ -114,6 +117,41 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
         }
     }
 
+    public class Squad{
+
+        public CritterGridState[][] map;
+        public Map<Critter, Point> critterPointMap;
+
+        public Squad(Critter c){
+
+            map = new CritterGridState[5][5];
+            critterPointMap = new HashMap<>();
+            critterPointMap.put(c, new Point(0, 0));
+        }
+
+        public void resize(int xSize, int ySize, int xOffset, int yOffset){
+
+            //todo implement
+        }
+
+        public void update(Critter c){
+
+            update((int) critterPointMap.get(c).getX(), (int) critterPointMap.get(c).getY());
+        }
+
+        public void update(int x, int y){
+
+            //todo implement
+        }
+
+
+    }
+
+    private static class CritterGridState{
+
+        public enum gridState {UNKNOWN, ALLY, ENEMY, FLOOR, WALL}
+        public enum gridDirection {NORTH, SOUTH, EAST, WEST}
+    }
 }
 
 //stuff to look at for overlord implementation--------------------------------------------------------------------------------------------------------
