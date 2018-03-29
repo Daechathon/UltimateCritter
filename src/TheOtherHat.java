@@ -1,14 +1,15 @@
-import org.omg.PortableInterceptor.DISCARDING;
-
-import java.lang.reflect.Constructor;
-import java.util.*;
 import java.awt.*;
+import java.lang.reflect.Constructor;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * Robbie Sollie - TheHat.java - EGR226 - CBU - 3/15/18
  */
-public class TheHat extends Critter {
-    private static HashMap<TheHat, CritterInfo> swarm = new HashMap<>();
+public class TheOtherHat extends Critter {
+    private static HashMap<TheOtherHat, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean amIFirst;
     private boolean hasMoved;
@@ -17,15 +18,13 @@ public class TheHat extends Critter {
     private static int peaceSum;
     private static boolean charge;
     private static int chargeDirection;
-    private HashSet<TheHat> squadMap;
-    private int squadBlue;
-    private Color squadColor;
-    private static TheHat last;
+    private HashSet<TheOtherHat> squadMap;
+    private int squadColor;
+    private static TheOtherHat last;
     private int x, y;
-    private static int stepCounter = 0;
 
 
-    public TheHat() {
+    public TheOtherHat() {
         movedThisRound = true;
         hasMoved = false;
         peaceTime = 0;
@@ -41,13 +40,12 @@ public class TheHat extends Critter {
         if (last != null) {
             squadMap = last.addToMap(this);
             squadColor = last.squadColor;
-            squadBlue = last.squadBlue;
         } else {
             squadMap = new HashSet<>();
             squadMap.add(this);
             Random r = new Random();
-            squadBlue = r.nextInt(255);
-            squadColor = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+            squadColor = r.nextInt(255);
+//            squadColor = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
             x = 0;
             y = 0;
         }
@@ -58,9 +56,11 @@ public class TheHat extends Critter {
     public Action getMove(CritterInfo info) {
         movedThisRound = true;
         last = this;
-        swarm.put(this, info);
+        if (!hasMoved) {
+            swarm.put(this, info);
+            hasMoved = true;
+        }
         if (!newCycle) {
-            stepCounter++;
             peaceSum = 0;
             amIFirst = true;
             newCycle = true;
@@ -169,7 +169,7 @@ public class TheHat extends Critter {
         return max;
     }
 
-    private HashSet<TheHat> addToMap(TheHat hat) {
+    private HashSet<TheOtherHat> addToMap(TheOtherHat hat) {
         CritterInfo mine = swarm.get(this);
         squadMap.add(hat);
         if (mine.getDirection() == Direction.NORTH) {
@@ -204,26 +204,19 @@ public class TheHat extends Critter {
             amIFirst = false;
             return Color.RED;
         }
-//        if (x == 0 && y == 0) {
-//            return Color.BLACK;
-//        } else if (x == 0 || y == 0) {
-//            return Color.WHITE;
-//        }
-        if (stepCounter % 200 < 100) {
-            return new Color(Math.abs(x) * 25 > 254 ? 255 : Math.abs(x) * 25, Math.abs(y) * 25 > 254 ? 255 : Math.abs(y) * 25, squadBlue);
-        }
-        return squadColor;
+        return new Color(Math.abs(x) * 100 > 254? 255 : Math.abs(x) * 100, Math.abs(y) * 100 > 254? 255 : Math.abs(y) * 100, squadColor);
+//        return squadColor;
     }
 
     private void killThemAll() {
-        Set<TheHat> hitList = new HashSet<>();
-        for (TheHat h : swarm.keySet()) {
+        Set<TheOtherHat> hitList = new HashSet<>();
+        for (TheOtherHat h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
             }
             h.movedThisRound = false;
         }
-        for (TheHat h : hitList) {
+        for (TheOtherHat h : hitList) {
             swarm.remove(h);
         }
     }
@@ -252,7 +245,7 @@ public class TheHat extends Critter {
         }
     }
 
-    private Critter.Neighbor getCompass (CritterInfo i, Direction compass) {
+    private Neighbor getCompass (CritterInfo i, Direction compass) {
         int numDirection = convertCardinal(i.getDirection());
         int numSearch = convertCardinal(compass);
 
