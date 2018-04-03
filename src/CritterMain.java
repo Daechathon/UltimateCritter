@@ -22,8 +22,8 @@ public class CritterMain {
         frame.add(30, Husky.class);
 //        frame.add(30, StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName.class);
 
-        frame.add(5820, Food.class);
-
+        frame.add(0, Food.class);
+//        frame.add(5994, Food.class);
         frame.start();
     }
 }

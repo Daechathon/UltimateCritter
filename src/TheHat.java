@@ -1,5 +1,3 @@
-import org.omg.PortableInterceptor.DISCARDING;
-
 import java.lang.reflect.Constructor;
 import java.util.*;
 import java.awt.*;
@@ -8,6 +6,12 @@ import java.awt.*;
  * Robbie Sollie - TheHat.java - EGR226 - CBU - 3/15/18
  */
 public class TheHat extends Critter {
+    private enum ColorMode {
+        RAINBOW, CYCLE, AXIS, SHELL_CYCLE, SHELL
+    }
+    private static final ColorMode VISUALS = ColorMode.SHELL;
+    private static final int COLOR_MULTIPLIER = 25;
+    private static final boolean COORDINATED = true;
     private static HashMap<TheHat, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean amIFirst;
@@ -17,11 +21,12 @@ public class TheHat extends Critter {
     private static int peaceSum;
     private static boolean charge;
     private static int chargeDirection;
-    private HashSet<TheHat> squadMap;
+    private HashMap<Point, TheHat> squadMap;
+    private Point coords;
     private int squadBlue;
     private Color squadColor;
     private static TheHat last;
-    private int x, y;
+    private int layer;
     private static int stepCounter = 0;
 
 
@@ -43,13 +48,12 @@ public class TheHat extends Critter {
             squadColor = last.squadColor;
             squadBlue = last.squadBlue;
         } else {
-            squadMap = new HashSet<>();
-            squadMap.add(this);
+            squadMap = new HashMap<>();
+            coords = new Point(0, 0);
+            squadMap.put(coords, this);
             Random r = new Random();
             squadBlue = r.nextInt(255);
             squadColor = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-            x = 0;
-            y = 0;
         }
     }
 
@@ -58,7 +62,14 @@ public class TheHat extends Critter {
     public Action getMove(CritterInfo info) {
         movedThisRound = true;
         last = this;
-        swarm.put(this, info);
+        if (COORDINATED) {
+            swarm.put(this, info);
+        } else {
+            if (!hasMoved) {
+                swarm.put(this, info);
+                hasMoved = true;
+            }
+        }
         if (!newCycle) {
             stepCounter++;
             peaceSum = 0;
@@ -103,6 +114,7 @@ public class TheHat extends Critter {
             }
         }
 
+        layer = 0;
         if (info.getFront() == Neighbor.OTHER) {
             peaceTime = 0;
             return Action.INFECT;
@@ -114,6 +126,55 @@ public class TheHat extends Critter {
             return Action.RIGHT;
         } else if (info.getFront() == Neighbor.EMPTY) {
             return Action.INFECT;
+        } else {
+            TheHat north = squadMap.get(new Point(coords.x, coords.y + 1));
+            TheHat south = squadMap.get(new Point(coords.x, coords.y - 1));
+            TheHat east = squadMap.get(new Point(coords.x + 1, coords.y));
+            TheHat west = squadMap.get(new Point(coords.x - 1, coords.y));
+            layer = 100;
+            Action current = Action.INFECT;
+            if (north != null && north.layer < layer) {
+                current = turnToDirection(info, Direction.NORTH);
+                layer = north.layer + 1;
+            } if (south != null && south.layer < layer) {
+                current = turnToDirection(info, Direction.SOUTH);
+                layer = south.layer + 1;
+            } if (east != null && east.layer < layer) {
+                current = turnToDirection(info, Direction.EAST);
+                layer = east.layer + 1;
+            } if (west != null && west.layer < layer) {
+                current = turnToDirection(info, Direction.WEST);
+                    layer = west.layer + 1;
+            }
+            return current;
+        }
+    }
+
+    private Action turnToDirection(CritterInfo info, Direction d) {
+        if (info.getDirection() == Direction.NORTH && d != Direction.NORTH) {
+            if (d == Direction.WEST) {
+                return Action.LEFT;
+            } else {
+                return Action.RIGHT;
+            }
+        } else if (info.getDirection() == Direction.EAST && d != Direction.EAST) {
+            if (d == Direction.NORTH) {
+                return Action.LEFT;
+            } else {
+                return Action.RIGHT;
+            }
+        } else if (info.getDirection() == Direction.SOUTH && d != Direction.SOUTH) {
+            if (d == Direction.EAST) {
+                return Action.LEFT;
+            } else {
+                return Action.RIGHT;
+            }
+        } else if (info.getDirection() == Direction.WEST && d != Direction.WEST) {
+            if (d == Direction.SOUTH) {
+                return Action.LEFT;
+            } else {
+                return Action.RIGHT;
+            }
         } else {
             return Action.INFECT;
         }
@@ -169,29 +230,33 @@ public class TheHat extends Critter {
         return max;
     }
 
-    private HashSet<TheHat> addToMap(TheHat hat) {
+    private HashMap<Point, TheHat> addToMap(TheHat hat) {
         CritterInfo mine = swarm.get(this);
-        squadMap.add(hat);
+        Point p = new Point();
         if (mine.getDirection() == Direction.NORTH) {
-            hat.y = this.y + 1;
-            hat.x = this.x;
+            p.setLocation(this.coords.x, this.coords.y + 1);
         } else if (mine.getDirection() == Direction.EAST) {
-            hat.y = this.y;
-            hat.x = this.x + 1;
+            p.setLocation(this.coords.x + 1, this.coords.y);
         } else if (mine.getDirection() == Direction.SOUTH) {
-            hat.y = this.y - 1;
-            hat.x = this.x;
+            p.setLocation(this.coords.x, this.coords.y - 1);
         } else if (mine.getDirection() == Direction.WEST) {
-            hat.y = this.y;
-            hat.x = this.x - 1;
+            p.setLocation(this.coords.x - 1, this.coords.y);
         }
+        hat.coords = p;
+        squadMap.put(p, hat);
         return squadMap;
     }
 
     @Override
     public String toString() {
 //        return "þ";
+        if (VISUALS == ColorMode.SHELL_CYCLE) {
+            if (stepCounter % 200 < 100) {
+                return "" + layer;
+            }
+        }
         return "█";
+//        return "" + layer;
     }
 
     public Color getColor() {
@@ -204,13 +269,24 @@ public class TheHat extends Critter {
             amIFirst = false;
             return Color.RED;
         }
-//        if (x == 0 && y == 0) {
-//            return Color.BLACK;
-//        } else if (x == 0 || y == 0) {
-//            return Color.WHITE;
-//        }
-        if (stepCounter % 200 < 100) {
-            return new Color(Math.abs(x) * 25 > 254 ? 255 : Math.abs(x) * 25, Math.abs(y) * 25 > 254 ? 255 : Math.abs(y) * 25, squadBlue);
+        if (VISUALS == ColorMode.CYCLE) {
+            if (stepCounter % 200 < 100) {
+                return new Color(Math.abs(coords.x) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.x) * COLOR_MULTIPLIER,
+                        Math.abs(coords.y) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.y) * COLOR_MULTIPLIER, squadBlue);
+            }
+        }
+        if (VISUALS == ColorMode.AXIS || VISUALS == ColorMode.CYCLE) {
+            if (coords.x == 0 && coords.y == 0) {
+                return Color.BLACK;
+            } else if (coords.x == 0 || coords.y == 0) {
+                return Color.WHITE;
+            }
+        } else if (VISUALS == ColorMode.RAINBOW) {
+            return new Color(Math.abs(coords.x) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.x) * COLOR_MULTIPLIER,
+                    Math.abs(coords.y) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.y) * COLOR_MULTIPLIER, squadBlue);
+        } else if (VISUALS == ColorMode.SHELL || VISUALS == ColorMode.SHELL_CYCLE) {
+            int value = layer * COLOR_MULTIPLIER > 254 ? 0 : 255 - (layer * COLOR_MULTIPLIER);
+            return new Color(value, value, value);
         }
         return squadColor;
     }
@@ -234,7 +310,7 @@ public class TheHat extends Critter {
         int[] directionCount = new int[4];
         for (CritterInfo i : swarm.values()) {
             for (Direction d : Direction.values()) {
-                if (getCompass(i, d) == Neighbor.OTHER) {
+                if (getNeighborCompass(i, d) == Neighbor.OTHER) {
                     iterateDirection(directionCount, d);
                 }
             }
@@ -252,7 +328,7 @@ public class TheHat extends Critter {
         }
     }
 
-    private Critter.Neighbor getCompass (CritterInfo i, Direction compass) {
+    private Critter.Neighbor getNeighborCompass(CritterInfo i, Direction compass) {
         int numDirection = convertCardinal(i.getDirection());
         int numSearch = convertCardinal(compass);
 
@@ -264,6 +340,21 @@ public class TheHat extends Critter {
             return i.getRight();
         } else {
             return i.getBack();
+        }
+    }
+
+    private Critter.Direction getDirectionCompass(CritterInfo i, Direction compass) {
+        int numDirection = convertCardinal(i.getDirection());
+        int numSearch = convertCardinal(compass);
+
+        if (numDirection == numSearch) {
+            return i.getFrontDirection();
+        } else if ((numDirection + 3) % 4 == numSearch) {
+            return i.getLeftDirection();
+        } else if ((numDirection + 1) % 4 == numSearch) {
+            return i.getRightDirection();
+        } else {
+            return i.getBackDirection();
         }
     }
 
