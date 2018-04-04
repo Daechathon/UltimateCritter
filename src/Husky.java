@@ -149,8 +149,6 @@ public class Husky extends Critter{
 
         }
 
-
-
     }
 
 

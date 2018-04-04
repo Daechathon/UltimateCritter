@@ -18,9 +18,9 @@ public class CritterMain {
         frame.add(30, TheHat.class);
         frame.add(30, FlyTrap.class);
         frame.add(30, Husky.class);
-        frame.add(30, StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName.class);
+        frame.add(30, Haxxx.class);
 
-        frame.add(2000, Food.class);
+        frame.add(1000, Food.class);
 
         frame.start();
     }
