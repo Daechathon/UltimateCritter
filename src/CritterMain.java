@@ -9,7 +9,7 @@
 
 public class CritterMain {
     public static void main(String[] args) {
-        CritterFrame frame = new CritterFrame(60, 40);
+        CritterFrame frame = new CritterFrame(100, 60);
 
         // uncomment each of these lines as you complete these classes
         frame.add(30, Bear.class);
@@ -20,8 +20,8 @@ public class CritterMain {
         frame.add(30, Husky.class);
         frame.add(30, Haxxx.class);
 
-        frame.add(1000, Food.class);
-
+        frame.add(0, Food.class);
+//        frame.add(5994, Food.class);
         frame.start();
     }
 }
