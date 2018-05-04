@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 /**
- * Robbie Sollie - TheHat.java - EGR226 - CBU - 3/15/18
+ * Robbie Sollie - RobbieCritter.java - EGR226 - CBU - 3/15/18
  */
 public class TheOtherHat extends Critter {
     private static HashMap<TheOtherHat, CritterInfo> swarm = new HashMap<>();

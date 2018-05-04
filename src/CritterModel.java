@@ -35,6 +35,11 @@ public class CritterModel {
         this.debugView = false;
     }
 
+    public CritterModel newModel() {
+        created = false;
+        return new CritterModel(width, height);
+    }
+
     public Iterator<Critter> iterator() {
         return info.keySet().iterator();
     }

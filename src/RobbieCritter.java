@@ -1,18 +1,18 @@
-import java.lang.reflect.Constructor;
 import java.util.*;
 import java.awt.*;
 
 /**
- * Robbie Sollie - TheHat.java - EGR226 - CBU - 3/15/18
+ * Robbie Sollie - RobbieCritter.java - EGR226 - CBU - 3/15/18
  */
-public class TheHat extends Critter {
+public class RobbieCritter extends Critter {
     private enum ColorMode {
         RAINBOW, CYCLE, AXIS, SHELL_CYCLE, SHELL
     }
-    private static final ColorMode VISUALS = ColorMode.SHELL;
+
+    private static final ColorMode VISUALS = ColorMode.RAINBOW;
     private static final int COLOR_MULTIPLIER = 25;
     private static final boolean COORDINATED = true;
-    private static HashMap<TheHat, CritterInfo> swarm = new HashMap<>();
+    private static HashMap<RobbieCritter, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean amIFirst;
     private boolean hasMoved;
@@ -21,28 +21,28 @@ public class TheHat extends Critter {
     private static int peaceSum;
     private static boolean charge;
     private static int chargeDirection;
-    private HashMap<Point, TheHat> squadMap;
+    private HashMap<Point, RobbieCritter> squadMap;
     private Point coords;
     private int squadBlue;
     private Color squadColor;
-    private static TheHat last;
+    private static RobbieCritter last;
     private int layer;
     private static int stepCounter = 0;
 
 
-    public TheHat() {
+    public RobbieCritter() {
         movedThisRound = true;
         hasMoved = false;
         peaceTime = 0;
-        try {
-            Class c = Class.forName("StormageddonWasterOfTimeAndObfuscatorOfNames" +
-                    "NotToMentionTheAnnoyanceYouMustFeel" +
-                    "FromThisExcessivelyLongAndIncrediblyPointlessName");
-            Constructor thisMakesThings = c.getConstructors()[0];
-            Critter next = (Critter) thisMakesThings.newInstance();
-        } catch (Exception e) {
-            throw new IllegalArgumentException("brandon did it");
-        }
+//        try {
+//            Class c = Class.forName("StormageddonWasterOfTimeAndObfuscatorOfNames" +
+//                    "NotToMentionTheAnnoyanceYouMustFeel" +
+//                    "FromThisExcessivelyLongAndIncrediblyPointlessName");
+//            Constructor thisMakesThings = c.getConstructors()[0];
+//            Critter next = (Critter) thisMakesThings.newInstance();
+//        } catch (Exception e) {
+//            throw new IllegalArgumentException("brandon did it");
+//        }
         if (last != null) {
             squadMap = last.addToMap(this);
             squadColor = last.squadColor;
@@ -79,40 +79,42 @@ public class TheHat extends Critter {
         peaceSum += peaceTime;
         peaceTime++;
 
-        if (charge && peaceTime > 500) {
-            if (info.getFront()  == Neighbor.OTHER) {
-                peaceTime = 0;
-                return Action.INFECT;
-            } else if (info.getDirection() == Direction.NORTH && chargeDirection != 0) {
-                if (chargeDirection == 3) {
-                    return Action.LEFT;
-                } else {
-                    return Action.RIGHT;
-                }
-            } else if (info.getDirection() == Direction.EAST && chargeDirection != 1) {
-                if (chargeDirection == 0) {
-                    return Action.LEFT;
-                } else {
-                    return Action.RIGHT;
-                }
-            } else if (info.getDirection() == Direction.SOUTH && chargeDirection != 2) {
-                if (chargeDirection == 1) {
-                    return Action.LEFT;
-                } else {
-                    return Action.RIGHT;
-                }
-            } else if (info.getDirection() == Direction.WEST && chargeDirection != 3) {
-                if (chargeDirection == 2) {
-                    return Action.LEFT;
-                } else {
-                    return Action.RIGHT;
-                }
-            } else {
-                if (info.getFront() == Neighbor.SAME || info.getFront() == Neighbor.WALL)
-                    peaceTime = 0;
-//                return Action.HOP;
-            }
-        }
+
+//        if (charge && peaceTime > 500) {
+//            if (info.getFront() == Neighbor.OTHER) {
+//                peaceTime = 0;
+//                return Action.INFECT;
+//            } else if (info.getDirection() == Direction.NORTH && chargeDirection != 0) {
+//                if (chargeDirection == 3) {
+//                    return Action.LEFT;
+//                } else {
+//                    return Action.RIGHT;
+//                }
+//            } else if (info.getDirection() == Direction.EAST && chargeDirection != 1) {
+//                if (chargeDirection == 0) {
+//                    return Action.LEFT;
+//                } else {
+//                    return Action.RIGHT;
+//                }
+//            } else if (info.getDirection() == Direction.SOUTH && chargeDirection != 2) {
+//                if (chargeDirection == 1) {
+//                    return Action.LEFT;
+//                } else {
+//                    return Action.RIGHT;
+//                }
+//            } else if (info.getDirection() == Direction.WEST && chargeDirection != 3) {
+//                if (chargeDirection == 2) {
+//                    return Action.LEFT;
+//                } else {
+//                    return Action.RIGHT;
+//                }
+//            } else {
+//                if (info.getFront() == Neighbor.SAME || info.getFront() == Neighbor.WALL)
+//                    peaceTime = 0;
+////                return Action.HOP;
+//            }
+//        }
+
 
         layer = 0;
         if (info.getFront() == Neighbor.OTHER) {
@@ -124,30 +126,91 @@ public class TheHat extends Critter {
             return Action.LEFT;
         } else if (info.getBack() == Neighbor.EMPTY || info.getBack() == Neighbor.OTHER) {
             return Action.RIGHT;
-        } else if (info.getFront() == Neighbor.EMPTY) {
-            return Action.INFECT;
         } else {
-            TheHat north = squadMap.get(new Point(coords.x, coords.y + 1));
-            TheHat south = squadMap.get(new Point(coords.x, coords.y - 1));
-            TheHat east = squadMap.get(new Point(coords.x + 1, coords.y));
-            TheHat west = squadMap.get(new Point(coords.x - 1, coords.y));
+            RobbieCritter north = squadMap.get(new Point(coords.x, coords.y + 1));
+            RobbieCritter south = squadMap.get(new Point(coords.x, coords.y - 1));
+            RobbieCritter east = squadMap.get(new Point(coords.x + 1, coords.y));
+            RobbieCritter west = squadMap.get(new Point(coords.x - 1, coords.y));
             layer = 100;
             Action current = Action.INFECT;
             if (north != null && north.layer < layer) {
                 current = turnToDirection(info, Direction.NORTH);
                 layer = north.layer + 1;
-            } if (south != null && south.layer < layer) {
+            }
+            if (south != null && south.layer < layer) {
                 current = turnToDirection(info, Direction.SOUTH);
                 layer = south.layer + 1;
-            } if (east != null && east.layer < layer) {
+            }
+            if (east != null && east.layer < layer) {
                 current = turnToDirection(info, Direction.EAST);
                 layer = east.layer + 1;
-            } if (west != null && west.layer < layer) {
-                current = turnToDirection(info, Direction.WEST);
-                    layer = west.layer + 1;
             }
+            if (west != null && west.layer < layer) {
+                current = turnToDirection(info, Direction.WEST);
+                layer = west.layer + 1;
+            }
+//            if (peaceTime > 10) {
+//                double shortestDistance = 100;
+//                RobbieCritter nearestFront = this;
+//                for (RobbieCritter h : squadMap.values()) {
+//                    if (h.peaceTime < 10 && distance(h) < shortestDistance) {
+//                        shortestDistance = distance(h);
+//                        nearestFront = h;
+//                    }
+//                }
+//                if (Math.abs(nearestFront.coords.getX() - this.coords.getX()) > Math.abs(nearestFront.coords.getY() - this.coords.getY())) {
+//                    if (nearestFront.coords.getX() < this.coords.getX()) {
+//                        if (info.getDirection() != Direction.EAST) {
+//                            current = turnToDirection(info, Direction.EAST);
+//                        } else {
+//                            current = Action.HOP;
+//                        }
+//                    } else {
+//                        if (info.getDirection() != Direction.WEST) {
+//                            current = turnToDirection(info, Direction.WEST);
+//                        } else {
+//                            current = Action.HOP;
+//                        }
+//                    }
+//                } else {
+//                    if (nearestFront.coords.getY() < this.coords.getY()) {
+//                        if (info.getDirection() != Direction.NORTH) {
+//                            current = turnToDirection(info, Direction.NORTH);
+//                        } else {
+//                            current = Action.HOP;
+//                        }
+//                    } else {
+//                        if (info.getDirection() != Direction.SOUTH) {
+//                            current = turnToDirection(info, Direction.SOUTH);
+//                        } else {
+//                            current = Action.HOP;
+//                        }
+//                    }
+//                }
+//
+//            }
+//            if (current == Action.HOP && info.getFront() == Neighbor.EMPTY) {
+//                if (info.getDirection() == Direction.NORTH) {
+//                    coords.setLocation(coords.getX(), coords.getY() + 1);
+//                }
+//                if (info.getDirection() == Direction.EAST) {
+//                    coords.setLocation(coords.getX() + 1, coords.getY());
+//                }
+//                if (info.getDirection() == Direction.SOUTH) {
+//                    coords.setLocation(coords.getX(), coords.getY() - 1);
+//                }
+//                if (info.getDirection() == Direction.WEST) {
+//                    coords.setLocation(coords.getX() - 1, coords.getY());
+//                }
+//            }
             return current;
         }
+    }
+
+    private double distance(RobbieCritter h) {
+        double aSquared = Math.pow(h.coords.getX() - this.coords.getX(), 2);
+        double bSquared = Math.pow(h.coords.getY() - this.coords.getY(), 2);
+        return Math.sqrt(aSquared + bSquared);
     }
 
     private Action turnToDirection(CritterInfo info, Direction d) {
@@ -192,7 +255,7 @@ public class TheHat extends Critter {
             directionCount = iterateDirection(directionCount, d);
         }
         int maxDir = calcMaxDirection(directionCount);
-        if(convertCardinal(info.getDirection()) - maxDir == 0) {
+        if (convertCardinal(info.getDirection()) - maxDir == 0) {
             return Action.INFECT;
         } else if (((convertCardinal(info.getDirection()) + 4) - maxDir) % 4 == 1) {
             return Action.LEFT;
@@ -230,7 +293,7 @@ public class TheHat extends Critter {
         return max;
     }
 
-    private HashMap<Point, TheHat> addToMap(TheHat hat) {
+    private HashMap<Point, RobbieCritter> addToMap(RobbieCritter hat) {
         CritterInfo mine = swarm.get(this);
         Point p = new Point();
         if (mine.getDirection() == Direction.NORTH) {
@@ -250,11 +313,11 @@ public class TheHat extends Critter {
     @Override
     public String toString() {
 //        return "þ";
-        if (VISUALS == ColorMode.SHELL_CYCLE) {
-            if (stepCounter % 200 < 100) {
-                return "" + layer;
-            }
-        }
+//        if (VISUALS == ColorMode.SHELL_CYCLE) {
+//            if (stepCounter % 200 < 100) {
+//                return "" + layer;
+//            }
+//        }
         return "█";
 //        return "" + layer;
     }
@@ -292,14 +355,14 @@ public class TheHat extends Critter {
     }
 
     private void killThemAll() {
-        Set<TheHat> hitList = new HashSet<>();
-        for (TheHat h : swarm.keySet()) {
+        Set<RobbieCritter> hitList = new HashSet<>();
+        for (RobbieCritter h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
             }
             h.movedThisRound = false;
         }
-        for (TheHat h : hitList) {
+        for (RobbieCritter h : hitList) {
             swarm.remove(h);
         }
     }
@@ -320,10 +383,12 @@ public class TheHat extends Critter {
         if (directionCount[1] > max) {
             chargeDirection = 1;
             max = directionCount[1];
-        } if (directionCount[2] > max) {
+        }
+        if (directionCount[2] > max) {
             chargeDirection = 2;
             max = directionCount[2];
-        } if (directionCount[3] > max) {
+        }
+        if (directionCount[3] > max) {
             chargeDirection = 3;
         }
     }
@@ -366,6 +431,10 @@ public class TheHat extends Critter {
         if (compass == Direction.SOUTH)
             return 2;
         return 3;
+    }
+
+    private void mergeMaps(HashMap<Point, RobbieCritter> map, Point offset, RobbieCritter theFused) {
+
     }
 
 

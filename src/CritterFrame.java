@@ -15,6 +15,7 @@ public class CritterFrame extends JFrame {
     private JButton countButton;
     private boolean started;
     private static boolean created;
+    private boolean finished = false;
     
     public CritterFrame(int width, int height) {
         // this prevents someone from trying to create their own copy of
@@ -155,8 +156,26 @@ public class CritterFrame extends JFrame {
             i++;
         }
         counts[maxI].setForeground(Color.RED);
+        if (max >= 2500) {
+//            created = false;
+//            started = false;
+//            myModel = myModel.newModel();
+//            myPicture = myPicture.newPanel(myModel);
+//            add(30, Bear.class);
+//            add(30, Lion.class);
+//            add(30, Giant.class);
+//            add(30, RobbieCritter.class);
+//            add(30, FlyTrap.class);
+//            add(30, Husky.class);
+//            add(30, Haxxx.class);
+            finished = true;
+        }
         String s = String.format("step =%5d", myModel.getSimulationCount());
         countButton.setText(s);
+    }
+
+    public boolean isFinished() {
+        return finished;
     }
 
     // add a certain number of critters of a particular class to the simulation

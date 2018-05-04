@@ -9,19 +9,27 @@
 
 public class CritterMain {
     public static void main(String[] args) {
-        CritterFrame frame = new CritterFrame(100, 60);
+        CritterFrame frame = new CritterFrame(50, 50);
 
         // uncomment each of these lines as you complete these classes
-        frame.add(30, Bear.class);
-        frame.add(30, Lion.class);
-        frame.add(30, Giant.class);
-        frame.add(30, TheHat.class);
-        frame.add(30, FlyTrap.class);
-        frame.add(30, Husky.class);
-        frame.add(30, Haxxx.class);
+//        frame.add(30, Bear.class);
+//        frame.add(30, Lion.class);
+//        frame.add(30, Giant.class);
+        frame.add(1250, RobbieCritter.class);
+//        frame.add(30, FlyTrap.class);
+        frame.add(1250, Husky.class);
+//        frame.add(30, Haxxx.class);
+//        frame.add(3000, RobbieCritter.class);
+//        frame.add(3000, TheOtherHat.class);
 
-        frame.add(0, Food.class);
-//        frame.add(5994, Food.class);
+//        frame.add(5790, Food.class);
+//        frame.add(500, Food.class);
         frame.start();
+        while (true) {
+            if (frame.isFinished()) {
+                System.out.println("Threading is weird");
+            }
+//            System.out.println("Hello... world?");
+        }
     }
 }
