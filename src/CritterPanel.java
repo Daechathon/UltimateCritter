@@ -29,9 +29,8 @@ public class CritterPanel extends JPanel {
                                        FONT_SIZE * model.getHeight() + 20));
     }
 
-    public CritterPanel newPanel(CritterModel model) {
+    public void newPanel() {
         created = false;
-        return new CritterPanel(model);
     }
 
     public void paintComponent(Graphics g) {

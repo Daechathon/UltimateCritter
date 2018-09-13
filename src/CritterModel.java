@@ -35,9 +35,8 @@ public class CritterModel {
         this.debugView = false;
     }
 
-    public CritterModel newModel() {
+    public void newModel() {
         created = false;
-        return new CritterModel(width, height);
     }
 
     public Iterator<Critter> iterator() {

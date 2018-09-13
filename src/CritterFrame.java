@@ -41,6 +41,10 @@ public class CritterFrame extends JFrame {
         started = false;
     }
 
+    public void immediateRun() {
+        myTimer.start();
+    }
+
     // construct the controls and label for the southern panel
     private void constructSouth() {
         // add timer controls to the south
@@ -156,7 +160,7 @@ public class CritterFrame extends JFrame {
             i++;
         }
         counts[maxI].setForeground(Color.RED);
-        if (max >= 2500) {
+        if (max >= 400) {
 //            created = false;
 //            started = false;
 //            myModel = myModel.newModel();
@@ -164,7 +168,7 @@ public class CritterFrame extends JFrame {
 //            add(30, Bear.class);
 //            add(30, Lion.class);
 //            add(30, Giant.class);
-//            add(30, RobbieCritter.class);
+//            add(30, TheHat.class);
 //            add(30, FlyTrap.class);
 //            add(30, Husky.class);
 //            add(30, Haxxx.class);
@@ -176,6 +180,14 @@ public class CritterFrame extends JFrame {
 
     public boolean isFinished() {
         return finished;
+    }
+
+    public CritterFrame newFrame(int height, int width) {
+        created = false;
+        myModel.newModel();
+        myPicture.newPanel();
+        dispose();
+        return new CritterFrame(width, height);
     }
 
     // add a certain number of critters of a particular class to the simulation

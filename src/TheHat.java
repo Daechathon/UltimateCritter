@@ -2,9 +2,9 @@ import java.util.*;
 import java.awt.*;
 
 /**
- * Robbie Sollie - RobbieCritter.java - EGR226 - CBU - 3/15/18
+ * Robbie Sollie - TheHat.java - EGR226 - CBU - 3/15/18
  */
-public class RobbieCritter extends Critter {
+public class TheHat extends Critter {
     private enum ColorMode {
         RAINBOW, CYCLE, AXIS, SHELL_CYCLE, SHELL
     }
@@ -12,7 +12,7 @@ public class RobbieCritter extends Critter {
     private static final ColorMode VISUALS = ColorMode.RAINBOW;
     private static final int COLOR_MULTIPLIER = 25;
     private static final boolean COORDINATED = true;
-    private static HashMap<RobbieCritter, CritterInfo> swarm = new HashMap<>();
+    private static HashMap<TheHat, CritterInfo> swarm = new HashMap<>();
     private static boolean newCycle;
     private boolean amIFirst;
     private boolean hasMoved;
@@ -21,19 +21,21 @@ public class RobbieCritter extends Critter {
     private static int peaceSum;
     private static boolean charge;
     private static int chargeDirection;
-    private HashMap<Point, RobbieCritter> squadMap;
+    private HashMap<Point, TheHat> squadMap;
     private Point coords;
     private int squadBlue;
     private Color squadColor;
-    private static RobbieCritter last;
+    private static TheHat last;
     private int layer;
     private static int stepCounter = 0;
+    private int lastTurn = 0;
 
 
-    public RobbieCritter() {
+    public TheHat() {
         movedThisRound = true;
         hasMoved = false;
         peaceTime = 0;
+
 //        try {
 //            Class c = Class.forName("StormageddonWasterOfTimeAndObfuscatorOfNames" +
 //                    "NotToMentionTheAnnoyanceYouMustFeel" +
@@ -43,18 +45,28 @@ public class RobbieCritter extends Critter {
 //        } catch (Exception e) {
 //            throw new IllegalArgumentException("brandon did it");
 //        }
-        if (last != null) {
-            squadMap = last.addToMap(this);
-            squadColor = last.squadColor;
-            squadBlue = last.squadBlue;
-        } else {
-            squadMap = new HashMap<>();
-            coords = new Point(0, 0);
-            squadMap.put(coords, this);
-            Random r = new Random();
-            squadBlue = r.nextInt(255);
-            squadColor = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
-        }
+            if (last != null) {
+                try {
+                    squadMap = last.addToMap(this);
+                } catch (Exception e) {
+                    System.out.println();
+                }
+                    squadColor = last.squadColor;
+                    squadBlue = last.squadBlue;
+
+            } else {
+                squadMap = new HashMap<>();
+                coords = new Point(0, 0);
+                squadMap.put(coords, this);
+                Random r = new Random();
+                squadBlue = r.nextInt(255);
+                squadColor = new Color(r.nextInt(255), r.nextInt(255), r.nextInt(255));
+            }
+
+    }
+
+    public TheHat(int i) {
+        last = null;
     }
 
 
@@ -62,6 +74,7 @@ public class RobbieCritter extends Critter {
     public Action getMove(CritterInfo info) {
         movedThisRound = true;
         last = this;
+        lastTurn = stepCounter;
         if (COORDINATED) {
             swarm.put(this, info);
         } else {
@@ -127,10 +140,10 @@ public class RobbieCritter extends Critter {
         } else if (info.getBack() == Neighbor.EMPTY || info.getBack() == Neighbor.OTHER) {
             return Action.RIGHT;
         } else {
-            RobbieCritter north = squadMap.get(new Point(coords.x, coords.y + 1));
-            RobbieCritter south = squadMap.get(new Point(coords.x, coords.y - 1));
-            RobbieCritter east = squadMap.get(new Point(coords.x + 1, coords.y));
-            RobbieCritter west = squadMap.get(new Point(coords.x - 1, coords.y));
+            TheHat north = squadMap.get(new Point(coords.x, coords.y + 1));
+            TheHat south = squadMap.get(new Point(coords.x, coords.y - 1));
+            TheHat east = squadMap.get(new Point(coords.x + 1, coords.y));
+            TheHat west = squadMap.get(new Point(coords.x - 1, coords.y));
             layer = 100;
             Action current = Action.INFECT;
             if (north != null && north.layer < layer) {
@@ -151,8 +164,8 @@ public class RobbieCritter extends Critter {
             }
 //            if (peaceTime > 10) {
 //                double shortestDistance = 100;
-//                RobbieCritter nearestFront = this;
-//                for (RobbieCritter h : squadMap.values()) {
+//                TheHat nearestFront = this;
+//                for (TheHat h : squadMap.values()) {
 //                    if (h.peaceTime < 10 && distance(h) < shortestDistance) {
 //                        shortestDistance = distance(h);
 //                        nearestFront = h;
@@ -207,7 +220,7 @@ public class RobbieCritter extends Critter {
         }
     }
 
-    private double distance(RobbieCritter h) {
+    private double distance(TheHat h) {
         double aSquared = Math.pow(h.coords.getX() - this.coords.getX(), 2);
         double bSquared = Math.pow(h.coords.getY() - this.coords.getY(), 2);
         return Math.sqrt(aSquared + bSquared);
@@ -293,7 +306,7 @@ public class RobbieCritter extends Critter {
         return max;
     }
 
-    private HashMap<Point, RobbieCritter> addToMap(RobbieCritter hat) {
+    private HashMap<Point, TheHat> addToMap(TheHat hat) {
         CritterInfo mine = swarm.get(this);
         Point p = new Point();
         if (mine.getDirection() == Direction.NORTH) {
@@ -306,18 +319,18 @@ public class RobbieCritter extends Critter {
             p.setLocation(this.coords.x - 1, this.coords.y);
         }
         hat.coords = p;
-        squadMap.put(p, hat);
+        Critter dead = squadMap.put(p, hat);
         return squadMap;
     }
 
     @Override
     public String toString() {
 //        return "þ";
-//        if (VISUALS == ColorMode.SHELL_CYCLE) {
-//            if (stepCounter % 200 < 100) {
-//                return "" + layer;
-//            }
-//        }
+        if (VISUALS == ColorMode.SHELL_CYCLE) {
+            if (stepCounter % 200 < 100) {
+                return "" + layer;
+            }
+        }
         return "█";
 //        return "" + layer;
     }
@@ -345,8 +358,12 @@ public class RobbieCritter extends Critter {
                 return Color.WHITE;
             }
         } else if (VISUALS == ColorMode.RAINBOW) {
-            return new Color(Math.abs(coords.x) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.x) * COLOR_MULTIPLIER,
-                    Math.abs(coords.y) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.y) * COLOR_MULTIPLIER, squadBlue);
+            try {
+                return new Color(Math.abs(coords.x) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.x) * COLOR_MULTIPLIER,
+                        Math.abs(coords.y) * COLOR_MULTIPLIER > 254 ? 255 : Math.abs(coords.y) * COLOR_MULTIPLIER, squadBlue);
+            } catch (Exception e) {
+                //
+            }
         } else if (VISUALS == ColorMode.SHELL || VISUALS == ColorMode.SHELL_CYCLE) {
             int value = layer * COLOR_MULTIPLIER > 254 ? 0 : 255 - (layer * COLOR_MULTIPLIER);
             return new Color(value, value, value);
@@ -355,14 +372,16 @@ public class RobbieCritter extends Critter {
     }
 
     private void killThemAll() {
-        Set<RobbieCritter> hitList = new HashSet<>();
-        for (RobbieCritter h : swarm.keySet()) {
+        Set<TheHat> hitList = new HashSet<>();
+        for (TheHat h : swarm.keySet()) {
             if (!h.movedThisRound) {
                 hitList.add(h);
             }
             h.movedThisRound = false;
         }
-        for (RobbieCritter h : hitList) {
+
+        for (TheHat h : hitList) {
+            Critter dead = h.squadMap.remove(h.coords);
             swarm.remove(h);
         }
     }
@@ -433,7 +452,7 @@ public class RobbieCritter extends Critter {
         return 3;
     }
 
-    private void mergeMaps(HashMap<Point, RobbieCritter> map, Point offset, RobbieCritter theFused) {
+    private void mergeMaps(HashMap<Point, TheHat> map, Point offset, TheHat theFused) {
 
     }
 

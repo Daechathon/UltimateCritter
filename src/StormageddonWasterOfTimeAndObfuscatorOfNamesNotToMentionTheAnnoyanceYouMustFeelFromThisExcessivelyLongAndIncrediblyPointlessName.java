@@ -20,7 +20,7 @@ public class StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanc
     private Squad squad;
 
     private static Class overlord;
-    private static String[] hierarchy = {"RobbieCritter", "StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName"};
+    private static String[] hierarchy = {"TheHat", "StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName"};
     
 
     public StormageddonWasterOfTimeAndObfuscatorOfNamesNotToMentionTheAnnoyanceYouMustFeelFromThisExcessivelyLongAndIncrediblyPointlessName() {
